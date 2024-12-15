@@ -22,79 +22,86 @@ function saveArticles() {
 	localStorage.setItem('articles', JSON.stringify(articles))
 }
 
-function renderArticles() {
-	articlesDiv.innerHTML = ''
-	articles.forEach((article, index) => {
-		const articleDiv = document.createElement('div')
-		articleDiv.className = 'article'
-
-		// Создание элемента с временем
-		const time = document.createElement('div')
-		time.className = 'article-time'
-		time.textContent = `Опубликовано: ${article.date}`
-
-		const title = document.createElement('h3')
-		title.textContent = article.title
-
-		const content = document.createElement('p')
-		content.innerHTML = article.content // Используем innerHTML для сохранения форматирования
-
-		const image = document.createElement('img')
-		if (article.image) {
-			image.src = article.image
-			image.alt = 'Изображение статьи'
-		}
-
-		const buttonsDiv = document.createElement('div')
-		buttonsDiv.className = 'buttons'
-
-		const editButton = document.createElement('button')
-		editButton.textContent = 'Редактировать'
-		editButton.onclick = () => editArticle(index)
-
-		const deleteButton = document.createElement('button')
-		deleteButton.textContent = 'Удалить'
-		deleteButton.className = 'delete'
-		deleteButton.onclick = () => deleteArticle(index)
-
-		buttonsDiv.appendChild(editButton)
-		buttonsDiv.appendChild(deleteButton)
-
-		// Добавляем элементы в нужном порядке
-		articleDiv.appendChild(time) // Добавляем время сверху
-		articleDiv.appendChild(title)
-		articleDiv.appendChild(content)
-		if (article.image) {
-			articleDiv.appendChild(image)
-		}
-		articleDiv.appendChild(buttonsDiv)
-
-		articlesDiv.appendChild(articleDiv)
-	})
+function convertToBase64(file) {
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.onload = () => resolve(reader.result);
+		reader.onerror = () => reject(new Error('Ошибка чтения файла'));
+		reader.readAsDataURL(file); // Читает файл и конвертирует в Base64
+	});
 }
 
+
+function renderArticles() {
+	articlesDiv.innerHTML = '';
+	articles.forEach((article, index) => {
+		const articleDiv = document.createElement('div');
+		articleDiv.className = 'article';
+
+		const time = document.createElement('div');
+		time.className = 'article-time';
+		time.textContent = `Опубликовано: ${article.date}`;
+
+		const title = document.createElement('h3');
+		title.textContent = article.title;
+
+		const content = document.createElement('p');
+		content.innerHTML = article.content;
+
+		const image = document.createElement('img');
+		if (article.image) {
+			image.src = article.image; // Base64 строка
+			image.alt = 'Изображение статьи';
+		}
+
+		const buttonsDiv = document.createElement('div');
+		buttonsDiv.className = 'buttons';
+
+		const editButton = document.createElement('button');
+		editButton.textContent = 'Редактировать';
+		editButton.onclick = () => editArticle(index);
+
+		const deleteButton = document.createElement('button');
+		deleteButton.textContent = 'Удалить';
+		deleteButton.className = 'delete';
+		deleteButton.onclick = () => deleteArticle(index);
+
+		buttonsDiv.appendChild(editButton);
+		buttonsDiv.appendChild(deleteButton);
+
+		articleDiv.appendChild(time);
+		articleDiv.appendChild(title);
+		articleDiv.appendChild(content);
+		if (article.image) {
+			articleDiv.appendChild(image);
+		}
+		articleDiv.appendChild(buttonsDiv);
+
+		articlesDiv.appendChild(articleDiv);
+	});
+}
+
+
 // Добавление или обновление статьи
-form.addEventListener('submit', e => {
-	e.preventDefault()
+form.addEventListener('submit', async e => {
+	e.preventDefault();
 
-	const title = titleInput.value.trim()
-	const content = contentInput.value.trim()
-	const articleId = articleIdInput.value
+	const title = titleInput.value.trim();
+	const content = contentInput.value.trim();
+	const articleId = articleIdInput.value;
 
-	const date = new Date()
+	const date = new Date();
 	const formattedDate = `${date.getDate().toString().padStart(2, '0')}.${(
 		date.getMonth() + 1
-	)
-		.toString()
-		.padStart(2, '0')}.${date.getFullYear()} ${date
+	).toString().padStart(2, '0')}.${date.getFullYear()} ${date
 		.getHours()
 		.toString()
-		.padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
+		.padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 
-	let imageUrl = null
+	let imageUrl = null;
 	if (imageInput.files.length > 0) {
-		const file = imageInput.files[0]
-		imageUrl = URL.createObjectURL(file)
+		const file = imageInput.files[0];
+		imageUrl = await convertToBase64(file); // Конвертируем в Base64
 	}
 
 	if (articleId) {
@@ -104,22 +111,23 @@ form.addEventListener('submit', e => {
 			content,
 			image: imageUrl,
 			date: formattedDate,
-		}
-		articleIdInput.value = '' // Очистить скрытое поле
+		};
+		articleIdInput.value = ''; // Очистить скрытое поле
 	} else {
 		// Добавить новую статью
-		articles.push({ title, content, image: imageUrl, date: formattedDate })
+		articles.push({ title, content, image: imageUrl, date: formattedDate });
 	}
 
 	// Очистить форму
-	form.reset()
+	form.reset();
 
 	// Очистить отображение имени файла
-	fileNameDisplay.textContent = 'Файл не выбран'
+	fileNameDisplay.textContent = 'Файл не выбран';
 
-	saveArticles() // Сохранить статьи в LocalStorage
-	renderArticles()
-})
+	saveArticles(); // Сохранить статьи в LocalStorage
+	renderArticles();
+});
+
 
 // Отображение названия выбранного файла
 imageInput.addEventListener('change', () => {
