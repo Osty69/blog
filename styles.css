@@ -1,0 +1,173 @@
+@font-face {
+	font-family: 'Benzin';
+	src: url('./fonts/benzin-regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
+}
+
+body {
+	font-family: 'Benzin', sans-serif;
+	font-weight: 400;
+	margin: 20px;
+	background-color: #0e0e0e;
+	color: #ffffff;
+}
+
+h1 {
+	font-family: 'Benzin', sans-serif;
+	font-weight: 600;
+	text-align: center;
+	color: #ffffff;
+}
+
+#article-form {
+	background-color: #232323;
+	padding: 20px;
+	border-radius: 3px;
+	max-width: 25%;
+	margin: 0 auto 20px;
+	box-shadow: 0 0 10px rgba(123, 123, 123, 0.235);
+}
+
+#article-form input,
+#article-form textarea,
+#article-form button {
+	font-family: 'Benzin', sans-serif;
+	font-weight: 300;
+	width: 96%;
+	margin-bottom: 15px;
+	padding: 10px;
+	border-radius: 3px;
+	font-size: 16px;
+}
+
+.custom-file-input {
+	display: none;
+}
+
+.custom-file-label {
+	display: inline-block;
+	background-color: #000000;
+	color: #ffffff;
+	padding: 10px 20px;
+	border-radius: 3px;
+	cursor: pointer;
+	font-family: 'Benzin', sans-serif;
+	font-weight: 500;
+	margin-bottom: 10px;
+	text-align: center;
+	transition: background-color 500ms, opacity 500ms;
+	opacity: 1;
+}
+
+.custom-file-label:hover {
+	background-color: #6a6d6a;
+	opacity: 0.8;
+}
+
+.file-name {
+	margin-left: 10px;
+	font-family: 'Benzin', sans-serif;
+	font-weight: 400;
+	color: #ffffff8f;
+	font-size: 14px;
+}
+
+#article-form button {
+	font-family: 'Benzin', sans-serif;
+	font-weight: 500;
+	background-color: #000000;
+	color: #ffffff;
+	border: none;
+	cursor: pointer;
+	transition: background-color 500ms, opacity 500ms;
+	opacity: 1;
+}
+
+#article-form button:hover {
+	background-color: #6a6d6a;
+	opacity: 0.8;
+}
+
+#articles {
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.article {
+	background-color: #232323;
+	border-radius: 8px;
+	padding: 15px;
+	margin-bottom: 15px;
+	box-shadow: 0 0px 10px rgba(123, 123, 123, 0.235);
+	opacity: 1;
+	transition: opacity 0.5s ease, transform 0.5s ease;
+	position: relative; /* Это важно для позиционирования времени */
+}
+
+.article-time {
+	position: absolute;
+	top: 43px;
+	right: 10px;
+	font-size: 14px;
+	color: #ffffff8f;
+}
+
+.article.deleting {
+	opacity: 0;
+	transform: translateX(-100%);
+}
+
+.article h3 {
+	margin: 0 0 20px;
+	color: #ffffff8f;
+}
+
+.article p {
+	margin: 0 0 10px;
+	line-height: 1.5;
+	white-space: pre-wrap; /* Это сохранит разрывы строк */
+}
+
+.article code {
+	background-color: #333;
+	color: #f9f9f9;
+	padding: 2px 4px;
+	border-radius: 3px;
+}
+
+.article pre {
+	background-color: #222;
+	padding: 15px;
+	border-radius: 5px;
+	overflow-x: auto;
+	color: #f9f9f9;
+	font-family: monospace;
+}
+
+
+.article img {
+	max-width: 40%;
+	border-radius: 5px;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+.buttons button {
+	font-family: 'Benzin', sans-serif;
+	font-weight: 700;
+	background-color: #ffffff;
+	color: #000000;
+	padding: 8px 12px;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 14px;
+	margin-right: 5px;
+	transition: background-color 500ms, opacity 500ms;
+	opacity: 1;
+}
+
+.buttons button:hover {
+	background-color: #aaaaaa;
+	opacity: 0.8;
+}
