@@ -8,7 +8,7 @@ const fileNameDisplay = document.getElementById('file-name')
 
 let articles = []
 
-// Загрузка статей из LocalStorage
+//загрузка статей из LocalStorage
 function loadArticles() {
 	const savedArticles = localStorage.getItem('articles')
 	if (savedArticles) {
@@ -17,7 +17,7 @@ function loadArticles() {
 	renderArticles()
 }
 
-// Сохранение статей в LocalStorage
+//сохранение статей в LocalStorage
 function saveArticles() {
 	localStorage.setItem('articles', JSON.stringify(articles))
 }
@@ -27,7 +27,7 @@ function convertToBase64(file) {
 		const reader = new FileReader();
 		reader.onload = () => resolve(reader.result);
 		reader.onerror = () => reject(new Error('Ошибка чтения файла'));
-		reader.readAsDataURL(file); // Читает файл и конвертирует в Base64
+		reader.readAsDataURL(file); // читает файл и конвертирует в Base64
 	});
 }
 
@@ -50,7 +50,7 @@ function renderArticles() {
 
 		const image = document.createElement('img');
 		if (article.image) {
-			image.src = article.image; // Base64 строка
+			image.src = article.image; // строка Base64 
 			image.alt = 'Изображение статьи';
 		}
 
@@ -82,7 +82,7 @@ function renderArticles() {
 }
 
 
-// Добавление или обновление статьи
+//добавление или обновление статьи
 form.addEventListener('submit', async e => {
 	e.preventDefault();
 
@@ -101,41 +101,41 @@ form.addEventListener('submit', async e => {
 	let imageUrl = null;
 	if (imageInput.files.length > 0) {
 		const file = imageInput.files[0];
-		imageUrl = await convertToBase64(file); // Конвертируем в Base64
+		imageUrl = await convertToBase64(file); // конвертируем в Base64
 	}
 
 	if (articleId) {
-		// Обновить существующую статью
+		//обновить существующую статью
 		articles[articleId] = {
 			title,
 			content,
 			image: imageUrl,
 			date: formattedDate,
 		};
-		articleIdInput.value = ''; // Очистить скрытое поле
+		articleIdInput.value = ''; //очистить скрытое поле
 	} else {
-		// Добавить новую статью
+		// добавить новую статью
 		articles.push({ title, content, image: imageUrl, date: formattedDate });
 	}
 
-	// Очистить форму
+	// очистить форму
 	form.reset();
 
-	// Очистить отображение имени файла
+	//очистить отображение имени файла
 	fileNameDisplay.textContent = 'Файл не выбран';
 
-	saveArticles(); // Сохранить статьи в LocalStorage
+	saveArticles(); //сохранить статьи в LocalStorage
 	renderArticles();
 });
 
 
-// Отображение названия выбранного файла
+//отображение названия выбранного файла
 imageInput.addEventListener('change', () => {
 	const fileName = imageInput.files[0]?.name || 'Файл не выбран'
 	fileNameDisplay.textContent = fileName
 })
 
-// Редактирование статьи
+//редактирование статьи
 function editArticle(index) {
 	const article = articles[index]
 	titleInput.value = article.title
@@ -143,20 +143,20 @@ function editArticle(index) {
 	articleIdInput.value = index
 }
 
-// Удаление статьи с анимацией
+//удаление статьи с анимацией
 function deleteArticle(index) {
 	const articleDiv = articlesDiv.children[index]
 
-	// Добавляем класс для анимации
+	//добавляем класс для анимации
 	articleDiv.classList.add('deleting')
 
-	// Ждем завершения анимации перед удалением
+	//ждем завершения анимации перед удалением
 	setTimeout(() => {
-		articles.splice(index, 1) // Удаляем статью из массива
-		saveArticles() // Сохраняем изменения в LocalStorage
-		renderArticles() // Перерисовываем статьи
-	}, 500) // Тайм-аут соответствует времени анимации (0.5s)
+		articles.splice(index, 1) // удаляем статью из массива
+		saveArticles() // сохраняем изменения в LocalStorage
+		renderArticles() // перерисовываем статьи
+	}, 500)
 }
 
-// Первоначальная загрузка статей
+//первоначальная загрузка статей
 loadArticles()
